@@ -1,0 +1,13 @@
+{
+    "name": "beryl/emaillabs",
+    "description": "Simple package to integrate Laravel email with EmailLabs.pl",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sebastian",
+            "email": "sebastianm187@live.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
