@@ -2,6 +2,7 @@
 
 namespace Beryldev\EmailLabs\Transport;
 
+use Swift_Encoding;
 use Swift_Mime_Message;
 use GuzzleHttp\Post\PostFile;
 use GuzzleHttp\ClientInterface;
@@ -53,16 +54,9 @@ class EmailLabsTransport extends Transport
 	 **/
 	public function send(Swift_Mime_Message $message, &$failedRecipients = null)
 	{
-		$data = [
-			'smtp_account' => $this->smtpAccount,
-			'to' => $this->getAddresses($message->getTo()),
-			'cc' => $this->getAddresses($message->getCc()),
-			'bcc' => $this->getAddresses($message->getBcc()),
-			'subject' => $message->getSubject(),
-			'from' => $this->getFromAddress($message),
-			'from_name' => $this->getFromName($message),
-			'html' => $message->getBody()
-		];
+		$this->beforeSendPerformed($message);
+
+		$data = $this->prepareData($message);
 
 		if (version_compare(ClientInterface::VERSION, '6') === 1) {
             $options = ['form_params' => $data];
@@ -74,13 +68,72 @@ class EmailLabsTransport extends Transport
 
 		try
 		{
-			$result = $this->client->post('https://api.emaillabs.net.pl/api/sendmail', $options);
-			return $result->getBody();
+			$response = json_decode($this->client
+				->post('https://api.emaillabs.net.pl/api/sendmail', $options)
+				->getBody(), true);
+
+			if($response['status'] === 'success')
+				\Log::debug('Message sent. '.$response['message']. ' '
+					.$this->formatResponseData($response));
+			else
+				\Log::warning('Message send failure. '.$response['message'].' '
+					.$this->formatResponseData($response));
+
 		}
 		catch(\Exception $e)
 		{
 			\Log::error($e);
 		}
+	}
+
+	/**
+	 * Prepare message data array from Swift message
+	 *
+	 * @return array
+	 * @author 
+	 **/
+	protected function prepareData(Swift_Mime_Message $message)
+	{
+		$data =  [
+			'smtp_account' => $this->smtpAccount,
+			'to' => $this->getAddresses($message->getTo()),
+			'cc' => $this->getFirstAddressFromAddresses($message->getCc()),
+			'cc_name' => $this->getFirstNameFromAddresses($message->getCc()),
+			'bcc' => $this->getFirstAddressFromAddresses($message->getBcc()),
+			'bcc_name' => $this->getFirstNameFromAddresses($message->getBcc()),
+			'from' => $this->getFirstAddressFromAddresses($message->getFrom()),
+			'from_name' => $this->getFirstNameFromAddresses($message->getFrom()),
+			'reply_to' => $this->getFirstNameFromAddresses($message->getReplyTo()),
+			'html' => $message->getBody(),
+			'subject' => substr($message->getSubject(), 0, 128)
+		];
+
+		if ($attachments = $message->getChildren()) {
+            $data['files'] = array_map(function ($attachment) {
+                return [
+                    'mime' => $attachment->getContentType(),
+                    'name' => $attachment->getFileName(),
+                    'content' => Swift_Encoding::getBase64Encoding()->encodeString($attachment->getBody()),
+                ];
+            }, $attachments);
+        }
+
+        return $data;
+	}
+
+	/**
+	 * Convert response data array to string
+	 *
+	 * @return string
+	 * @author 
+	 **/
+	protected function formatResponseData($response)
+	{
+		$result = '';
+		foreach($response['data'][0] as $key => $value)
+			$result.=$key.':'.$value.';';
+
+		return $result;
 	}
 
 	/**
@@ -101,36 +154,31 @@ class EmailLabsTransport extends Transport
 	}
 
 	/**
-	 * undocumented function
+	 *  Recive if exists first recipient address from addresses array
 	 *
-	 * @param  \Swift_Mime_Message $message
 	 * @return string
 	 * @author 
 	 **/
-	protected function getFromAddress(Swift_Mime_Message $message)
+	protected function getFirstAddressFromAddresses($addresses)
 	{
-		$from = '';
-		if($message->getFrom())
-			$from = array_keys($message->getFrom())[0];
+		if($addresses)
+			return array_keys($addresses)[0];
 
-		return $from;
+		return '';
 	}
 
 	/**
-	 * undocumented function
+	 * Recive if exists first recipient name from addresses array
 	 *
-	 * @param  \Swift_Mime_Message $message
 	 * @return string
 	 * @author 
 	 **/
-	protected function getFromName(Swift_Mime_Message $message)
+	protected function getFirstNameFromAddresses($addresses)
 	{
-		$from = '';
-		if($message->getFrom())
-			$from = array_values($message->getFrom())[0];
+		if($addresses)
+			return substr(array_values($addresses)[0], 0, 128);
 
-
-		return $from;
+		return '';
 	}
 
 	/**
