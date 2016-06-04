@@ -1,4 +1,4 @@
-## Unofficial Laravel mail driver for EmailLabs.pl
+# Unofficial Laravel mail driver for EmailLabs.pl
 Simple package to integrate Laravel Email with EmailLabs.pl
 
 ## Installation
@@ -45,3 +45,7 @@ EL_SECRET=your_emaillabs_secret_key
 ```
 EL_SMTP=your_emaillabs_smtp_account_name
 ```
+
+## License
+
+The Laravel EmailLabs Integration is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
