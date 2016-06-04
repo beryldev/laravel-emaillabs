@@ -2,7 +2,7 @@
 
 return [
 
-	'key' => env('EL_KEY', ''),
+	'key' => env('EL_APP', ''),
 
 	'secret' => env('EL_SECRET', ''),
 
