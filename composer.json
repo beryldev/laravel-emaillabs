@@ -1,5 +1,5 @@
 {
-    "name": "beryl/emaillabs",
+    "name": "beryldev/emaillabs",
     "description": "Simple package to integrate Laravel Email with EmailLabs.pl",
     "license": "MIT",
     "authors": [
