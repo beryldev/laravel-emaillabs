@@ -36,13 +36,13 @@ class EmailLabsTransport extends Transport
 	 *
 	 * @var string
 	 **/
-	protected $key;
+	protected $app;
 
 	public function __construct(ClientInterface $client, array $config)
 	{
 		$this->client = $client;
 		$this->secret = $config['secret'];
-		$this->key = $config['app'];
+		$this->app = $config['app'];
 		$this->smtpAccount = $config['smtp'];
 	}
 
@@ -64,7 +64,7 @@ class EmailLabsTransport extends Transport
             $options = ['body' => $data];
         }
 
-        $options['auth'] = [$this->key, $this->secret];
+        $options['auth'] = [$this->app, $this->secret];
 
 		try
 		{
