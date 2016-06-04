@@ -23,3 +23,25 @@ Copy the package config to your local config with the publish command:
 ```
 php artisan vendor:publish --provider="Beryldev\EmailLabs\EmailLabsServiceProvider"
 ```
+
+## Configuration
+
+After install add to your .env file requred parameters.
+
+### App Key
+
+```
+EL_APP=your_emaillabs_app_key
+```
+
+### Secret Key
+
+```
+EL_SECRET=your_emaillabs_secret_key
+```
+
+### SMTP account name
+
+```
+EL_SMTP=your_emaillabs_smtp_account_name
+```
