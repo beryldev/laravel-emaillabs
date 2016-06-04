@@ -42,7 +42,7 @@ class EmailLabsTransport extends Transport
 	{
 		$this->client = $client;
 		$this->secret = $config['secret'];
-		$this->key = $config['key'];
+		$this->key = $config['app'];
 		$this->smtpAccount = $config['smtp'];
 	}
 
