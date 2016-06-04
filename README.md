@@ -7,7 +7,7 @@ Simple package to integrate Laravel Email with [EmailLabs&trade;](http://emailla
 
 This package is in early beta stage, and is no available via packagist.org
 
-To install add to your Laravel project **composer.json**:
+To install add to your Laravel project `composer.json`:
 ```
 "minimum-stability": "dev",
 "repositories": [
@@ -16,6 +16,13 @@ To install add to your Laravel project **composer.json**:
         "type": "git"
     }
 ],
+```
+
+EmailLabs API driver require that the Guzzle HTTP library be installed for your application. 
+
+You may install Guzzle to your project by adding the following line to your `composer.json` file:
+```
+"guzzlehttp/guzzle": "~5.3|~6.0"
 ```
 
 Require this package with composer:
