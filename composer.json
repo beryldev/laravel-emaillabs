@@ -1,6 +1,6 @@
 {
     "name": "beryl/emaillabs",
-    "description": "Simple package to integrate Laravel email with EmailLabs.pl",
+    "description": "Simple package to integrate Laravel Email with EmailLabs.pl",
     "license": "MIT",
     "authors": [
         {
@@ -9,5 +9,15 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "php": ">=5.5.9",
+        "illuminate/support": "~5.*",
+        "illuminate/mail": "~5.*",
+        "guzzlehttp/guzzle": "~5.3|~6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Beryldev\\EmailLabs\\": "src"
+        }
+    }
 }
