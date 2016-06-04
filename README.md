@@ -3,9 +3,7 @@ Simple package to integrate Laravel Email with [EmailLabs&trade;](http://emailla
 
 ## Installation
 
-**Important!**
-
-This package is in early beta stage, and is no available via packagist.org
+**Important!** This package is in early beta stage, and is no available via packagist.org
 
 To install add to your Laravel project `composer.json`:
 ```
