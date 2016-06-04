@@ -1,5 +1,5 @@
-## Unofficial Laravel mail integration with EmailLabs
-Simple package to integrate Laravel Email with [EmailLabs](http://emaillabs.io)
+## Unofficial Laravel mail integration with EmailLabs&trade;
+Simple package to integrate Laravel Email with [EmailLabs&trade;](http://emaillabs.io)
 
 ## Installation
 
