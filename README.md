@@ -3,6 +3,19 @@ Simple package to integrate Laravel Email with [EmailLabs&trade;](http://emailla
 
 ## Installation
 
+**Important!**
+This package is in early beta stage, and is no available via packagist.org
+To install add to your Laravel project composer.json file:
+```
+"minimum-stability": "dev",
+"repositories": [
+    {
+        "url": "https://github.com/beryldev/laravel-emaillabs.git",
+        "type": "git"
+    }
+],
+```
+
 Require this package with composer:
 
 ```
@@ -21,7 +34,7 @@ Beryldev\EmailLabs\EmailLabsServiceProvider::class,
 Copy the package config to your local config with the publish command:
 
 ```
-php artisan vendor:publish --provider="Beryldev\EmailLabs\EmailLabsServiceProvider"
+php artisan vendor:publish --provider="Beryldev\EmailLabs\EmailLabsServiceProvider" --tag=config
 ```
 
 ## Configuration
