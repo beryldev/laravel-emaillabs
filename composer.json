@@ -4,7 +4,6 @@
     "keywords": ["laravel", "emial", "labs", "emiallabs", "driver", "mail"],
     "homepage": "https://github.com/beryldev/laravel-emaillabs",
     "license": "MIT",
-    "version": "1.0.0-stable",
     "authors": [
         {
             "name": "Sebastian",
