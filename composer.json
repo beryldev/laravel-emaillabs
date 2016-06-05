@@ -1,16 +1,20 @@
 {
     "name": "beryldev/laravel-emaillabs",
     "description": "Simple package to integrate Laravel email with EmailLabs",
+    "keywords": "laravel, emial, labs, emiallabs, driver, mail",
+    "homepage": "https://github.com/beryldev/laravel-emaillabs",
     "license": "MIT",
     "authors": [
         {
             "name": "Sebastian",
-            "email": "sebastianm187@live.com"
+            "email": "sebastianm187@live.com",
+            "homepage": "https://github.com/beryldev"
         }
     ],
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.5.9",
+        "laravel/framework": "5.2.*",
         "guzzlehttp/guzzle": "~5.3|~6.0"
     },
     "autoload": {

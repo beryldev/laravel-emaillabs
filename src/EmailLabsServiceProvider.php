@@ -19,7 +19,7 @@ class EmailLabsServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/../config/emaillabs.php' => config_path('emaillabs.php'),
-        ], 'config');
+            ], 'config');
 
         $transportManager = $this->app['swift.transport'];
         $this->registerEmailLabsTransport($transportManager);
@@ -32,10 +32,15 @@ class EmailLabsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
-
+        //
     }
 
+    /**
+     * Get to register our custom email driver
+     *
+     * @return void
+     * @author Sebastian
+     **/
     protected function registerEmailLabsTransport($manager)
     {
         $manager->extend('emaillabs', function(){
@@ -47,10 +52,10 @@ class EmailLabsServiceProvider extends ServiceProvider
     }
 
     /**
-     * undocumented function
+     * Prepare configured http client
      *
-     * @return void
-     * @author 
+     * @return GuzzleHttp\Client
+     * @author Sebastian
      **/
     protected function getHttpClient($config)
     {

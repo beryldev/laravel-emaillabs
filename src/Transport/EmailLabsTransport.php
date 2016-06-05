@@ -47,8 +47,10 @@ class EmailLabsTransport extends Transport
 	}
 
 	/**
-	 * undocumented function
+	 * Sends message using EmailLabs API
 	 *
+	 * @param  array|null &$failedRecipients
+	 * @param  \Swift_Mime_Message $message
 	 * @return void
 	 * @author Sebastian
 	 **/
@@ -59,12 +61,12 @@ class EmailLabsTransport extends Transport
 		$data = $this->prepareData($message);
 
 		if (version_compare(ClientInterface::VERSION, '6') === 1) {
-            $options = ['form_params' => $data];
-        } else {
-            $options = ['body' => $data];
-        }
+			$options = ['form_params' => $data];
+		} else {
+			$options = ['body' => $data];
+		}
 
-        $options['auth'] = [$this->app, $this->secret];
+		$options['auth'] = [$this->app, $this->secret];
 
 		try
 		{
@@ -89,43 +91,45 @@ class EmailLabsTransport extends Transport
 	/**
 	 * Prepare message data array from Swift message
 	 *
+	 * @param  \Swift_Mime_Message $message
 	 * @return array
-	 * @author 
+	 * @author Sebastian
 	 **/
 	protected function prepareData(Swift_Mime_Message $message)
 	{
 		$data =  [
-			'smtp_account' => $this->smtpAccount,
-			'to' => $this->getAddresses($message->getTo()),
-			'cc' => $this->getFirstAddressFromAddresses($message->getCc()),
-			'cc_name' => $this->getFirstNameFromAddresses($message->getCc()),
-			'bcc' => $this->getFirstAddressFromAddresses($message->getBcc()),
-			'bcc_name' => $this->getFirstNameFromAddresses($message->getBcc()),
-			'from' => $this->getFirstAddressFromAddresses($message->getFrom()),
-			'from_name' => $this->getFirstNameFromAddresses($message->getFrom()),
-			'reply_to' => $this->getFirstNameFromAddresses($message->getReplyTo()),
-			'html' => $message->getBody(),
-			'subject' => substr($message->getSubject(), 0, 128)
+		'smtp_account' => $this->smtpAccount,
+		'to' => $this->getAddresses($message->getTo()),
+		'cc' => $this->getFirstAddressFromAddresses($message->getCc()),
+		'cc_name' => $this->getFirstNameFromAddresses($message->getCc()),
+		'bcc' => $this->getFirstAddressFromAddresses($message->getBcc()),
+		'bcc_name' => $this->getFirstNameFromAddresses($message->getBcc()),
+		'from' => $this->getFirstAddressFromAddresses($message->getFrom()),
+		'from_name' => $this->getFirstNameFromAddresses($message->getFrom()),
+		'reply_to' => $this->getFirstNameFromAddresses($message->getReplyTo()),
+		'html' => $message->getBody(),
+		'subject' => substr($message->getSubject(), 0, 128)
 		];
 
 		if ($attachments = $message->getChildren()) {
-            $data['files'] = array_map(function ($attachment) {
-                return [
-                    'mime' => $attachment->getContentType(),
-                    'name' => $attachment->getFileName(),
-                    'content' => Swift_Encoding::getBase64Encoding()->encodeString($attachment->getBody()),
-                ];
-            }, $attachments);
-        }
+			$data['files'] = array_map(function ($attachment) {
+				return [
+				'mime' => $attachment->getContentType(),
+				'name' => $attachment->getFileName(),
+				'content' => Swift_Encoding::getBase64Encoding()->encodeString($attachment->getBody()),
+				];
+			}, $attachments);
+		}
 
-        return $data;
+		return $data;
 	}
 
 	/**
 	 * Convert response data array to string
 	 *
+	 * @param  array $response
 	 * @return string
-	 * @author 
+	 * @author Sebastian
 	 **/
 	protected function formatResponseData($response)
 	{
@@ -156,8 +160,9 @@ class EmailLabsTransport extends Transport
 	/**
 	 *  Recive if exists first recipient address from addresses array
 	 *
+	 * @param  array|null $addresses
 	 * @return string
-	 * @author 
+	 * @author Sebastian
 	 **/
 	protected function getFirstAddressFromAddresses($addresses)
 	{
@@ -170,8 +175,9 @@ class EmailLabsTransport extends Transport
 	/**
 	 * Recive if exists first recipient name from addresses array
 	 *
+	 * @param  array|null $addresses
 	 * @return string
-	 * @author 
+	 * @author Sebastian
 	 **/
 	protected function getFirstNameFromAddresses($addresses)
 	{
@@ -179,27 +185,5 @@ class EmailLabsTransport extends Transport
 			return substr(array_values($addresses)[0], 0, 128);
 
 		return '';
-	}
-
-	/**
-	 * Get API key
-	 *
-	 * @return string
-	 * @author Sebastian
-	 **/
-	public function getKey()
-	{
-		return $this->key;
-	}
-
-	/**
-	 * Set API key
-	 *
-	 * @return string $key
-	 * @author Sebastian
-	 **/
-	public function setKey($key)
-	{
-		return $this->key = $key;
 	}
 }
