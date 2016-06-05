@@ -9,10 +9,10 @@ To install add to your Laravel project `composer.json`:
 ```
 "minimum-stability": "dev",
 "repositories": [
-{
-	"url": "https://github.com/beryldev/laravel-emaillabs.git",
-	"type": "git"
-}
+	{
+		"url": "https://github.com/beryldev/laravel-emaillabs.git",
+		"type": "git"
+	}
 ],
 ```
 
